@@ -1,4 +1,5 @@
 import {
+    SET_TOKEN,
     SET_NAME,
     SET_ADDRESS,
     SET_PHONE_NUMBER,
@@ -6,6 +7,7 @@ import {
 } from './constants';
 
 interface IState {
+    token: string | null,
     name: string,
     address: string,
     phoneNumber: string,
@@ -13,6 +15,7 @@ interface IState {
 };
 
 const initialState: IState = {
+    token: null,
     name: '',
     address: '',
     phoneNumber: '',
@@ -26,6 +29,8 @@ interface IAction {
 
 const rootReducer = (state = initialState, action:IAction): IState => {
     switch(action.type) {
+    case SET_TOKEN:
+        return { ...state, token: action.payload };
     case SET_NAME:
         return { ...state, name: action.payload };
     case SET_ADDRESS:

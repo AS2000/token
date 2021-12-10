@@ -1,9 +1,17 @@
 import {
+    SET_TOKEN,
     SET_NAME,
     SET_ADDRESS,
     SET_PHONE_NUMBER,
     SET_IS_FETCHING,
 } from './constants';
+
+export const setToken = (payload:string | null) => {
+    return {
+        type: SET_TOKEN,
+        payload,
+    };
+};
 
 export const setName = (payload:string) => {
     return {
