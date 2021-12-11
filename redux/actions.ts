@@ -3,7 +3,8 @@ import {
     SET_NAME,
     SET_ADDRESS,
     SET_PHONE_NUMBER,
-    SET_IS_FETCHING,
+    SET_IS_LOADING,
+    SET_IS_SIGNOUT,
 } from './constants';
 
 export const setToken = (payload:string | null) => {
@@ -34,9 +35,16 @@ export const setPhoneNumber = (payload:string) => {
     };
 };
 
-export const setIsFetching = (payload:boolean) => {
+export const setIsLoading = (payload:boolean) => {
     return {
-        type: SET_IS_FETCHING,
+        type: SET_IS_LOADING,
+        payload,
+    };
+};
+
+export const setIsSignout = (payload:boolean) => {
+    return {
+        type: SET_IS_SIGNOUT,
         payload,
     };
 };

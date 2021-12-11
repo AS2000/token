@@ -1,15 +1,25 @@
-import axios from "axios";
+import axios from 'axios';
+import { AxiosResponse, AxiosError } from 'axios';
+import { Dispatch } from 'redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const getJWTtoken = (userName: string, password: string) => {
-    const api = 'https://app.swaggerhub.com/apis-docs/NFQ5/Application/1.0.0-oas3';
-    axios.post(api, {
-        Username: userName,
-        Password: password,
+import { setIsLoading } from '../redux/actions';
+import { IAction } from '../redux/reducer';
+
+export const fetchJWTtoken = (userName: string, password: string) => async (dispatch: Dispatch<IAction>) => {
+    const api = 'https://vidqjclbhmef.herokuapp.com/credentials';
+
+    dispatch(setIsLoading(true));
+    await axios.post(api, {
+        username: userName,
+        password: password,
     })
-        .then(res => {
-            console.log('data: ', res.data);
+        .then((res: AxiosResponse<any>) => {
+            dispatch(setIsLoading(false));
+            AsyncStorage.setItem('token', res.data.token);
         })
-        .catch((error) => {
-            error.log('error: ', error);
+        .catch((error: AxiosError<any>) => {
+            dispatch(setIsLoading(false));
+            console.log('error: ', error);
     })
 };

@@ -6,22 +6,35 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SigninScreen from './screens/Signin/Signin';
 import ProfileScreen from './screens/Profile/Profile';
 import SplashScreen from './screens/SplashScreen/SplashScreen';
-import { useAppSelector } from './redux/hooks';
+import { useAppSelector, useAppDispatch } from './redux/hooks';
 import store from './redux/store';
+import { setToken } from './redux/actions';
+import  { getToken } from './helper';
 
-const isLoading = false;
-const isSignout = false;
+const AppBody: React.FC  = () => {
+  const dispatch = useAppDispatch();
 
-const AppBody = () => {
+  React.useEffect(() => {
+    const storage = async() => {
+      const token = await getToken();
+      dispatch(setToken(token));
+    };
+    storage();
+  },[])
+
   const Stack = createStackNavigator();
   const token = useAppSelector(state => state.token);
+  const isLoading = useAppSelector(state => state.isLoading);
+  const isSignout = useAppSelector(state => state.isSignout);
   console.log('token: ', token);
+  console.log('isLoading: ', isLoading);
+  console.log('isSignout: ', isSignout);
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
           {(isLoading
-            ? (<Stack.Screen name="Splash" component={SplashScreen} />)
+            ? (<Stack.Screen name="Loading" component={SplashScreen} />)
             : token == null
               ? (<Stack.Screen
                   name="SignIn"
@@ -39,7 +52,7 @@ const AppBody = () => {
 };
 
 
-const App = () => (
+const App: React.FC  = () => (
   <Provider store={store}>
     <AppBody />
   </Provider>

@@ -5,7 +5,7 @@ const SplashScreen: React.FC  = () => (
     <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
             <Text>
-            Signin
+                Loading...
             </Text>
         </View>
     </SafeAreaView>
