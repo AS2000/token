@@ -18,9 +18,9 @@ interface IState {
 
 const initialState: IState = {
     token: null,
-    name: '',
-    address: '',
-    phoneNumber: '',
+    name: 'John Doe', // TODO set an empty string when API will be added
+    address: 'Adress line', // TODO set an empty string when API will be added
+    phoneNumber: '+370 xxx xxxxx', // TODO set an empty string when API will be added
     isLoading: false,
     isSignout: false,
 };

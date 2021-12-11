@@ -17,7 +17,11 @@ const AppBody: React.FC  = () => {
   React.useEffect(() => {
     const storage = async() => {
       const token = await getToken();
-      dispatch(setToken(token));
+      if (token) {
+        dispatch(setToken(token));
+      } else {
+        dispatch(setToken(null));
+      }
     };
     storage();
   },[])
