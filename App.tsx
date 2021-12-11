@@ -10,11 +10,18 @@ import { useAppSelector, useAppDispatch } from './redux/hooks';
 import store from './redux/store';
 import { setToken } from './redux/actions';
 import  { getToken } from './helper';
+import  { fetchImage } from './api/images';
+import  { IMAGE_URL } from './api/constants';
 
 const AppBody: React.FC  = () => {
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
+    const images = async() => {
+      await fetchImage(IMAGE_URL);
+    }
+    images();
+
     const storage = async() => {
       const token = await getToken();
       if (token) {

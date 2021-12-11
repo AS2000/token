@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { SafeAreaView, Button, TextInput, View, StyleSheet } from 'react-native';
+import { SafeAreaView, Button, TextInput, View, Image, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 
 import { fetchJWTtoken } from '../../api/authentication';
 import { useAppDispatch } from '../../redux/hooks';
+import { IMAGE_URL } from '../../api/constants';
 
 const Signin: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -23,6 +24,7 @@ const Signin: React.FC = () => {
 
     return (
         <SafeAreaView style={styles.container}>
+            <Image style={{width: 100, height: 100}} source={{ uri: IMAGE_URL }} />
             <Formik
                 initialValues={initialValues}
                 onSubmit={values => {
