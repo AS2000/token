@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SafeAreaView, Button, TextInput, View, Text, Image, StyleSheet } from 'react-native';
+import { SafeAreaView, TextInput, View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 
 import { fetchJWTtoken } from '../../api/authentication';
@@ -44,6 +44,7 @@ const Signin: React.FC = () => {
                         autoCapitalize="none"
                         keyboardType="email-address"
                         textContentType="emailAddress"
+                        style={styles.input}
                         value={values.userName}
                     />
                     {
@@ -59,6 +60,7 @@ const Signin: React.FC = () => {
                         autoCapitalize="none"
                         secureTextEntry
                         textContentType="password"
+                        style={styles.input}
                         value={values.password}
                     />
                     {
@@ -66,7 +68,15 @@ const Signin: React.FC = () => {
                             <Text style={{color: 'red'}}>{errors.password}</Text>
                         )
                     }
-                    <Button onPress={handleSubmit} title="Submit" />
+                    <TouchableOpacity
+                        onPress={handleSubmit}
+                        style={styles.button}
+                    >
+                        <Text>
+                            Submit
+                        </Text>
+                    </TouchableOpacity>
+
                 </View>
                 )}
             </Formik>
@@ -79,6 +89,21 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    input: {
+        height: 40,
+        width: 250,
+        marginTop: 12,
+        marginBottom: 2,
+        borderWidth: 1,
+        padding: 10,
+    },
+    button: {
+        height: 40,
+        width: 250,
+        marginTop: 20,
+        alignItems: "center",
+        backgroundColor: "#DDDDDD",
     },
   });
 
