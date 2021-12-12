@@ -4,16 +4,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useWindowDimensions } from 'react-native';
 
-import SigninScreen from './screens/Signin/Signin';
-import ProfileScreen from './screens/Profile/Profile';
-import SplashScreen from './screens/SplashScreen/SplashScreen';
 import { useAppSelector, useAppDispatch } from './redux/hooks';
 import store from './redux/store';
 import { setToken, setIsPortait } from './redux/actions';
 import  { getToken } from './helper';
+import { isPortrait } from './helper/platform';
 import  { fetchImage } from './api/images';
 import  { IMAGE_URL } from './api/constants';
-import { isPortrait } from './helper/platform';
+import SigninScreen from './screens/Signin/Signin';
+import ProfileScreen from './screens/Profile/Profile';
+import SplashScreen from './screens/SplashScreen/SplashScreen';
 
 const AppBody: React.FC  = () => {
   const window = useWindowDimensions();
@@ -43,20 +43,39 @@ const AppBody: React.FC  = () => {
   const Stack = createStackNavigator();
   const token = useAppSelector(state => state.token);
   const isLoading = useAppSelector(state => state.isLoading);
-  console.log('token: ', token);
-  console.log('isLoading: ', isLoading);
+
+  const renderSplashScreen = () => (
+    <Stack.Screen
+      name="Loading"
+      component={SplashScreen}
+      options={{ title: '' }}
+    />
+  );
+
+  const renderDataScreens = () => (
+    <>
+      {
+        token == null
+          ? (<Stack.Screen
+              name="SignIn"
+              component={SigninScreen}
+              options={{ title: '' }}
+            />)
+          : (<Stack.Screen
+              name="Profile"
+              component={ProfileScreen}
+              options={{ title: '' }}
+            />)
+      }
+    </>
+  );
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
           {(isLoading
-            ? (<Stack.Screen name="Loading" component={SplashScreen} />)
-            : token == null
-              ? (<Stack.Screen
-                  name="SignIn"
-                  component={SigninScreen}
-                />)
-              : (<Stack.Screen name="Profile" component={ProfileScreen} />)
+            ? renderSplashScreen()
+            : renderDataScreens()
           )}
       </Stack.Navigator>
     </NavigationContainer>

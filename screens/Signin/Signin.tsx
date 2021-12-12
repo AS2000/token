@@ -11,18 +11,17 @@ import {
 } from 'react-native';
 import { Formik } from 'formik';
 
-import { fetchJWTtoken } from '../../api/authentication';
+import { setIsPortait } from '../../redux/actions';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { fetchJWTtoken } from '../../api/authentication';
 import { IMAGE_URL } from '../../api/constants';
 import { signinSchema } from '../../validationSchema';
 import { isPortrait } from '../../helper/platform';
-import { setIsPortait } from '../../redux/actions';
+
 
 const Signin: React.FC = () => {
-    const window = useWindowDimensions();
-    console.log('window: ', window);
-
     const dispatch = useAppDispatch();
+    const window = useWindowDimensions();
     const isPortait = useAppSelector(state => state.isPortait);
     const handleSubmit = (userName: string, password: string) => {
         fetchJWTtoken(userName, password)(dispatch);

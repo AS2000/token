@@ -7,10 +7,11 @@ import {
     TouchableOpacity,
     StyleSheet,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native'
 
-import { logout } from '../../api/authentication';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { IMAGE_URL } from '../../api/constants';
+import { logout } from '../../api/authentication';
 
 const Profile: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -21,17 +22,24 @@ const Profile: React.FC = () => {
     const name = useAppSelector(state => state.name);
     const address = useAppSelector(state => state.address);
     const phoneNumber = useAppSelector(state => state.phoneNumber);
+    const nav = useNavigation();
 
-    const renderButton = () => (
+    const renderLogoutButton = () => (
     <TouchableOpacity
         onPress={handleLogout}
-        style={styles.button}
+        style={styles.logoutButton}
     >
         <Text>
-            LOGOUT
+            Logout
         </Text>
     </TouchableOpacity>
     );
+
+    React.useEffect(() => {
+        nav.setOptions({
+          headerRight: renderLogoutButton,
+        });
+    });
 
     const renderImage = () => (
         <View style={styles.imageBlock}>
@@ -53,16 +61,8 @@ const Profile: React.FC = () => {
         </View>
     );
 
-    const renderLandscapeDataColumn = () => (
-        <View>
-            { renderButton() }
-            { renderDataFields() }
-        </View>
-    )
-
     const renderPortrait = () => (
         <View style={styles.dataBlock}>
-            <View style={styles.portraitButton}>{ renderButton() }</View>
             { renderImage() }
             { renderDataFields() }
         </View>
@@ -71,7 +71,7 @@ const Profile: React.FC = () => {
     const renderLandscape = () => (
         <View style={ styles.landscapeView }>
             <View style={ styles.landscapeColumn }>{ renderImage() }</View>
-            <View style={ styles.landscapeColumn }>{ renderLandscapeDataColumn() }</View>
+            <View style={ styles.landscapeColumn }>{ renderDataFields() }</View>
         </View>
     );
 
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     landscapeColumn: {
         maxWidth: '50%',
         flexDirection: 'column',
+        padding: 40,
     },
     imageBlock: {
         flexDirection: 'column',
@@ -121,22 +122,20 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        paddingTop: 30,
     },
     dataLine: {
         paddingTop: 20,
         fontSize: 16,
     },
-    portraitButton: {
-        alignSelf: 'flex-end',
-        paddingBottom: 20,
-    },
-    button: {
+    logoutButton: {
         height: 40,
-        width: 60,
-        marginTop: 20,
-        alignItems: 'flex-end',
+        width: 70,
+        margin: 10,
+        alignItems: 'center',
         backgroundColor: '#DDDDDD',
         justifyContent: 'center',
+        fontSize: 16,
     },
   });
 
