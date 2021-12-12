@@ -129,7 +129,7 @@ const Signin: React.FC = () => {
                             isPortait
                                 ? renderPortrait({ handleChange, handleBlur, handleSubmit, values, errors, touched })
                                 : renderLandscape({ handleChange, handleBlur, handleSubmit, values, errors, touched })
-                            }
+                        }
                     </View>
                     )}
                 </Formik>
