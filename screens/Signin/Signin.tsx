@@ -7,13 +7,12 @@ import {
     Image,
     TouchableOpacity,
     StyleSheet,
-    Dimensions,
     useWindowDimensions,
 } from 'react-native';
 import { Formik } from 'formik';
 
 import { fetchJWTtoken } from '../../api/authentication';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { IMAGE_URL } from '../../api/constants';
 import { signinSchema } from '../../validationSchema';
 import { isPortrait } from '../../helper/platform';
@@ -24,6 +23,7 @@ const Signin: React.FC = () => {
     console.log('window: ', window);
 
     const dispatch = useAppDispatch();
+    const isPortait = useAppSelector(state => state.isPortait);
     const handleSubmit = (userName: string, password: string) => {
         fetchJWTtoken(userName, password)(dispatch);
     };
@@ -42,68 +42,97 @@ const Signin: React.FC = () => {
         password: '',
     };
 
+    const renderImage = () => (
+        <View style={styles.imageBlock}>
+            <Image style={
+                isPortait
+                    ? styles.portraitImage
+                    : styles.landscapeImage
+                }
+                source={{ uri: IMAGE_URL }}
+            />
+        </View>
+    );
+
+    const renderInputFields = ({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+        <View style={styles.inputBlock}>
+            <TextInput
+                placeholder="Username (email)"
+                onChangeText={handleChange('userName')}
+                onBlur={handleBlur('userName')}
+                autoCorrect={false}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                textContentType="emailAddress"
+                style={styles.input}
+                value={values.userName}
+            />
+            {
+                errors.userName && touched.userName && (
+                    <Text style={{color: 'red'}}>{errors.userName}</Text>
+                )
+            }
+            <TextInput
+                placeholder="Password"
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                autoCorrect={false}
+                autoCapitalize="none"
+                secureTextEntry
+                textContentType="password"
+                style={styles.input}
+                value={values.password}
+            />
+            {
+                errors.userName && touched.userName && (
+                    <Text style={{color: 'red'}}>{errors.password}</Text>
+                )
+            }
+            <TouchableOpacity
+                onPress={handleSubmit}
+                style={styles.button}
+            >
+                <Text>
+                    Submit
+                </Text>
+            </TouchableOpacity>
+        </View>
+    );
+
+    const renderPortrait = props => (
+        <View style={styles.inputBlock}>
+            { renderImage() }
+            { renderInputFields(props) }
+        </View>
+    );
+
+    const renderLandscape = props => (
+        <View style={ styles.landscapeView }>
+            <View style={ styles.landscapeColumn }>{ renderImage() }</View>
+            <View style={ styles.landscapeColumn }>{ renderInputFields(props) }</View>
+        </View>
+    );
+
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.viewItems}>
-                <Image style={styles.image} source={{ uri: IMAGE_URL }} />
                 <Formik
                     initialValues={initialValues}
                     validationSchema={signinSchema}
                     onSubmit={values => {
                         console.log(values);
-                        handleSubmit('john.doe@nfq.lt', 'johndoe');
+                        handleSubmit(values.userName, values.password); // 'john.doe@nfq.lt', 'johndoe'
                     }}
                 >
                     {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-                    <View style={styles.viewItems}>
-                        <TextInput
-                            placeholder="Username (email)"
-                            onChangeText={handleChange('userName')}
-                            onBlur={handleBlur('userName')}
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            keyboardType="email-address"
-                            textContentType="emailAddress"
-                            style={styles.input}
-                            value={values.userName}
-                        />
+                    <View>
                         {
-                            errors.userName && touched.userName && (
-                                <Text style={{color: 'red'}}>{errors.userName}</Text>
-                            )
-                        }
-                        <TextInput
-                            placeholder="Password"
-                            onChangeText={handleChange('password')}
-                            onBlur={handleBlur('password')}
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            secureTextEntry
-                            textContentType="password"
-                            style={styles.input}
-                            value={values.password}
-                        />
-                        {
-                            errors.userName && touched.userName && (
-                                <Text style={{color: 'red'}}>{errors.password}</Text>
-                            )
-                        }
-                        <TouchableOpacity
-                            onPress={handleSubmit}
-                            style={styles.button}
-                        >
-                            <Text>
-                                Submit
-                            </Text>
-                        </TouchableOpacity>
-                        <Text>
-                            Dimensions = {JSON.stringify(Dimensions.get('screen'))}{'\n'}
-                            isPortrait = {isPortrait(window) ? 'true\n' : 'false\n'}
-                        </Text>
+                            isPortait
+                                ? renderPortrait({ handleChange, handleBlur, handleSubmit, values, errors, touched })
+                                : renderLandscape({ handleChange, handleBlur, handleSubmit, values, errors, touched })
+                            }
                     </View>
                     )}
                 </Formik>
-                </View>
         </SafeAreaView>
     )
 };
@@ -114,11 +143,29 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    image: {
+    landscapeView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    landscapeColumn: {
+        maxWidth: '50%',
+        flexDirection: 'column',
+    },
+    imageBlock: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    landscapeImage: {
+        width: 200,
+        height: 200,
+    },
+    portraitImage: {
         width: 100,
         height: 100,
     },
-    viewItems: {
+    inputBlock: {
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
     },
