@@ -4,7 +4,7 @@ import {
     SET_ADDRESS,
     SET_PHONE_NUMBER,
     SET_IS_LOADING,
-    SET_IS_SIGNOUT,
+    SET_IS_PORTRAIT,
 } from './constants';
 
 interface IState {
@@ -13,7 +13,7 @@ interface IState {
     address: string,
     phoneNumber: string,
     isLoading: boolean,
-    isSignout: boolean,
+    isPortait: boolean,
 };
 
 const initialState: IState = {
@@ -22,7 +22,7 @@ const initialState: IState = {
     address: 'Adress line', // TODO set an empty string when API will be added
     phoneNumber: '+370 xxx xxxxx', // TODO set an empty string when API will be added
     isLoading: false,
-    isSignout: false,
+    isPortait: true,
 };
 
 export interface IAction {
@@ -42,8 +42,8 @@ const rootReducer = (state = initialState, action:IAction): IState => {
         return { ...state, phoneNumber: action.payload };
     case SET_IS_LOADING:
         return { ...state, isLoading: action.payload };
-    case SET_IS_SIGNOUT:
-        return { ...state, isSignout: action.payload };
+    case SET_IS_PORTRAIT:
+        return { ...state, isPortait: action.payload };
     default:
         return state;
     };

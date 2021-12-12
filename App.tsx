@@ -2,18 +2,21 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useWindowDimensions } from 'react-native';
 
 import SigninScreen from './screens/Signin/Signin';
 import ProfileScreen from './screens/Profile/Profile';
 import SplashScreen from './screens/SplashScreen/SplashScreen';
 import { useAppSelector, useAppDispatch } from './redux/hooks';
 import store from './redux/store';
-import { setToken } from './redux/actions';
+import { setToken, setIsPortait } from './redux/actions';
 import  { getToken } from './helper';
 import  { fetchImage } from './api/images';
 import  { IMAGE_URL } from './api/constants';
+import { isPortrait } from './helper/platform';
 
 const AppBody: React.FC  = () => {
+  const window = useWindowDimensions();
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
@@ -33,13 +36,15 @@ const AppBody: React.FC  = () => {
     storage();
   },[])
 
+  React.useEffect(() => {
+    dispatch(setIsPortait(isPortrait(window)))
+},[window]);
+
   const Stack = createStackNavigator();
   const token = useAppSelector(state => state.token);
   const isLoading = useAppSelector(state => state.isLoading);
-  const isSignout = useAppSelector(state => state.isSignout);
   console.log('token: ', token);
   console.log('isLoading: ', isLoading);
-  console.log('isSignout: ', isSignout);
 
   return (
     <NavigationContainer>
@@ -50,10 +55,6 @@ const AppBody: React.FC  = () => {
               ? (<Stack.Screen
                   name="SignIn"
                   component={SigninScreen}
-                  options={{
-                    title: 'Sign in',
-                    animationTypeForReplace: isSignout ? 'pop' : 'push',
-                  }}
                 />)
               : (<Stack.Screen name="Profile" component={ProfileScreen} />)
           )}
