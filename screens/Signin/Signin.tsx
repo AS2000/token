@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         alignItems: "center",
         backgroundColor: "#DDDDDD",
+        justifyContent: 'center',
     },
   });
 
