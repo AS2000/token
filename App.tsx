@@ -59,7 +59,7 @@ const AppBody: React.FC  = () => {
           ? (<Stack.Screen
               name="SignIn"
               component={SigninScreen}
-              options={{ title: '' }}
+              options={{ title: '', headerShown: false }}
             />)
           : (<Stack.Screen
               name="Profile"

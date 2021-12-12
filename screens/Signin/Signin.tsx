@@ -42,27 +42,25 @@ const Signin: React.FC = () => {
     };
 
     const renderImage = () => (
-        <View style={styles.imageBlock}>
-            <Image style={
-                isPortait
-                    ? styles.portraitImage
-                    : styles.landscapeImage
-                }
-                source={{ uri: IMAGE_URL }}
-            />
-        </View>
+        <Image style={
+            isPortait
+                ? styles.portraitImage
+                : styles.landscapeImage
+            }
+            source={{ uri: IMAGE_URL }}
+        />
     );
 
     const renderInputFields = ({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
         <View style={styles.inputBlock}>
             <TextInput
-                placeholder="Username (email)"
+                placeholder='Username'
                 onChangeText={handleChange('userName')}
                 onBlur={handleBlur('userName')}
                 autoCorrect={false}
-                autoCapitalize="none"
-                keyboardType="email-address"
-                textContentType="emailAddress"
+                autoCapitalize='none'
+                keyboardType='email-address'
+                textContentType='emailAddress'
                 style={styles.input}
                 value={values.userName}
             />
@@ -72,13 +70,13 @@ const Signin: React.FC = () => {
                 )
             }
             <TextInput
-                placeholder="Password"
+                placeholder='Password'
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
                 autoCorrect={false}
-                autoCapitalize="none"
+                autoCapitalize='none'
                 secureTextEntry
-                textContentType="password"
+                textContentType='password'
                 style={styles.input}
                 value={values.password}
             />
@@ -99,7 +97,7 @@ const Signin: React.FC = () => {
     );
 
     const renderPortrait = props => (
-        <View style={styles.inputBlock}>
+        <View style={styles.portraitView}>
             { renderImage() }
             { renderInputFields(props) }
         </View>
@@ -118,7 +116,6 @@ const Signin: React.FC = () => {
                     initialValues={initialValues}
                     validationSchema={signinSchema}
                     onSubmit={values => {
-                        console.log(values);
                         handleSubmit(values.userName, values.password); // 'john.doe@nfq.lt', 'johndoe'
                     }}
                 >
@@ -139,7 +136,7 @@ const Signin: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
     },
     landscapeView: {
@@ -150,9 +147,8 @@ const styles = StyleSheet.create({
         maxWidth: '50%',
         flexDirection: 'column',
     },
-    imageBlock: {
+    portraitView: {
         flexDirection: 'column',
-        justifyContent: 'center',
         alignItems: 'center',
     },
     landscapeImage: {
@@ -162,6 +158,7 @@ const styles = StyleSheet.create({
     portraitImage: {
         width: 100,
         height: 100,
+        marginVertical: 60,
     },
     inputBlock: {
         flexDirection: 'column',
@@ -169,6 +166,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     input: {
+        textAlign: 'center',
         height: 40,
         width: 250,
         marginTop: 12,
