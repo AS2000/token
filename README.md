@@ -10,7 +10,7 @@ password: johndoe
 ● Typescript
 ● React Native
 ● React Navigation
-● AsycStorage
+● AsyncStorage
 ● Redux
 ● Formik
 ● Yup
