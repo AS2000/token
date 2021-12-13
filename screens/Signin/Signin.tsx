@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     landscapeColumn: {
         maxWidth: '50%',
         flexDirection: 'column',
+        padding: 40,
     },
     portraitView: {
         flexDirection: 'column',

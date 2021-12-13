@@ -48,7 +48,7 @@ const AppBody: React.FC  = () => {
     <Stack.Screen
       name="Loading"
       component={SplashScreen}
-      options={{ title: '' }}
+      options={{ title: '', headerShown: false }}
     />
   );
 
